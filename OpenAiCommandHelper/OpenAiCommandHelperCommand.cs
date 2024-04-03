@@ -39,13 +39,20 @@ namespace OpenAiCommandHelper
                 RhinoApp.WriteLine("No user instructions provided. Aborting.");
                 return Result.Failure;
             }
-            RhinoApp.RunScript("_-Line 0,0,0 10,10,10", false);
+
 
             var ScriptResult = CallPython(userInstructions);
             //RhinoApp.WriteLine(ScriptResult);
             try
             {
+                RhinoApp.WriteLine("Generated Result!: ");
+
+                RhinoApp.WriteLine(ScriptResult);
+
+                
                 RhinoApp.RunScript(ScriptResult, true);
+
+                CreateTextInTopView(doc, userInstructions);
             }
             catch (Exception e)
             {
@@ -159,6 +166,45 @@ namespace OpenAiCommandHelper
                 return null;
             }
             }
+
+        private Result CreateTextInTopView(RhinoDoc doc, string text, bool error = false, double height = 2, string font = "Arial")
+        {
+
+            var position = new Point3d(0, 20, 0); // Default position, if not specified
+            var color = Color.Black;
+
+            if (error)
+            {
+                var position = new Point3d(0, 0, 0); // Default position, if not specified
+                var color = Color.Red;
+            }
+
+            // Default font and height are already set in the method parameters
+
+            Plane plane = Plane.WorldXY;
+            plane.Origin = position;
+
+
+
+            TextEntity textEntity = new TextEntity
+            {
+                Plane = plane,
+                Text = text,
+                Justification = TextJustification.Left,
+                FontIndex = doc.Fonts.FindOrCreate(font, false, false),
+                TextHeight = height,
+                TextColor = color.Value;
+                
+            };
+
+            if (doc.Objects.AddText(textEntity) != Guid.Empty)
+            {
+                doc.Views.Redraw();
+                return Result.Success;
+            }
+
+            return Result.Failure;
+        }
 
     }
 }
