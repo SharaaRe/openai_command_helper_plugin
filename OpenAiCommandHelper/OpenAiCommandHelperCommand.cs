@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 //using System;
 using System.Text;
+using System.Drawing;
 
 namespace OpenAiCommandHelper
 {
@@ -28,8 +29,13 @@ namespace OpenAiCommandHelper
         ///<returns>The command name as it appears on the Rhino command line.</returns>
         public override string EnglishName => "OpenAiCommandHelperCommand";
 
+
+
         protected override Result RunCommand(RhinoDoc doc, RunMode mode)
         {
+            string version = GetVersionFromUser(doc);
+            RhinoApp.WriteLine("Chosen Version:" + version);
+
             string userInstructions = GetUserInstructions();
             var tokens = userInstructions.Split(new char[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             RhinoApp.WriteLine($"{tokens.Length}");
@@ -50,15 +56,44 @@ namespace OpenAiCommandHelper
                 RhinoApp.WriteLine(ScriptResult);
 
                 
-                RhinoApp.RunScript(ScriptResult, true);
+                var res = RhinoApp.RunScript(ScriptResult, true);
+                RhinoApp.WriteLine(res.ToString());
 
                 CreateTextInTopView(doc, userInstructions);
             }
             catch (Exception e)
             {
+                CreateTextInTopView(doc, "\n Error! \n Generated Command: " +ScriptResult + "\n Error: " +e.Message);
+
                 RhinoApp.WriteLine(e.Message);
             }
             return Result.Success;
+        }
+
+
+        private string GetVersionFromUser(RhinoDoc doc)
+        {
+            GetOption getOption = new GetOption();
+            getOption.SetCommandPrompt("Choose the GPT version");
+            getOption.AcceptNothing(true);
+            int optionIndex1 = getOption.AddOption("gpt-3.5-turbo");
+            int optionIndex2 = getOption.AddOption("gpt-4");
+
+            GetResult result = getOption.Get();
+
+            if (result == GetResult.Option)
+            {
+                if (getOption.OptionIndex() == optionIndex1)
+                {
+                    return "gpt-3.5-turbo";
+                }
+                else if (getOption.OptionIndex() == optionIndex2)
+                {
+                    return "gpt-4";
+                }
+            }
+
+            return null; // Return null if no valid option was selected or if the operation was canceled
         }
 
         private string GetUserInstructions()
@@ -167,17 +202,10 @@ namespace OpenAiCommandHelper
             }
             }
 
-        private Result CreateTextInTopView(RhinoDoc doc, string text, bool error = false, double height = 2, string font = "Arial")
+        private Result CreateTextInTopView(RhinoDoc doc, string text, double height = 2, string font = "Arial")
         {
 
             var position = new Point3d(0, 20, 0); // Default position, if not specified
-            var color = Color.Black;
-
-            if (error)
-            {
-                var position = new Point3d(0, 0, 0); // Default position, if not specified
-                var color = Color.Red;
-            }
 
             // Default font and height are already set in the method parameters
 
@@ -193,7 +221,6 @@ namespace OpenAiCommandHelper
                 Justification = TextJustification.Left,
                 FontIndex = doc.Fonts.FindOrCreate(font, false, false),
                 TextHeight = height,
-                TextColor = color.Value;
                 
             };
 
