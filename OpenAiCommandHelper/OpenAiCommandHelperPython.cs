@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using Rhino;
 using Rhino.Commands;
@@ -7,18 +7,19 @@ using Rhino.Input;
 using Rhino.Input.Custom;
 using System.Diagnostics;
 using System.IO;
+using Rhino.Runtime;
+using System.Drawing;
+
+
 //using System;
 using System.Text;
-using System.Drawing;
-//using System.Text.Json;
-
 
 namespace OpenAiCommandHelper
 {
     [Rhino.Commands.CommandStyle(Rhino.Commands.Style.ScriptRunner)]
-    public class OpenAiCommandHelperSeries : Command
+    public class OpenAiCommandHelperPython : Command
     {
-        public OpenAiCommandHelperSeries()
+        public OpenAiCommandHelperPython()
         {
             // Rhino only creates one instance of each command class defined in a
             // plug-in, so it is safe to store a refence in a static property.
@@ -26,18 +27,13 @@ namespace OpenAiCommandHelper
         }
 
         ///<summary>The only instance of this command.</summary>
-        public static OpenAiCommandHelperSeries Instance { get; private set; }
+        public static OpenAiCommandHelperPython Instance { get; private set; }
 
         ///<returns>The command name as it appears on the Rhino command line.</returns>
-        public override string EnglishName => "OpenAiCommandHelperCommand";
-
-
+        public override string EnglishName => "OpenAiCommandHelperPython";
 
         protected override Result RunCommand(RhinoDoc doc, RunMode mode)
         {
-            //string version = GetVersionFromUser(doc);
-            //RhinoApp.WriteLine("Chosen Version:" + version);
-
             string userInstructions = GetUserInstructions();
             var tokens = userInstructions.Split(new char[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             RhinoApp.WriteLine($"{tokens.Length}");
@@ -56,49 +52,17 @@ namespace OpenAiCommandHelper
                 RhinoApp.WriteLine("Generated Result!: ");
 
                 RhinoApp.WriteLine(ScriptResult);
-                //JsonElement element = JsonSerializer.Deserialize<JsonElement>(ScriptResult);
 
-                //string rhinoscript = element.GetProperty("RhinoScript").GetString();
-                //string description = element.GetProperty("description").GetString();
-
-                var res = RhinoApp.RunScript(ScriptResult, true);
-                RhinoApp.WriteLine(res.ToString());
+                PythonScript script = PythonScript.Create();
+                script.ExecuteScript(ScriptResult);
 
                 CreateTextInTopView(doc, userInstructions);
             }
             catch (Exception e)
             {
-                CreateTextInTopView(doc, "\n Error! \n Generated Command: " +ScriptResult + "\n Error: " +e.Message);
-
                 RhinoApp.WriteLine(e.Message);
             }
             return Result.Success;
-        }
-
-
-        private string GetVersionFromUser(RhinoDoc doc)
-        {
-            GetOption getOption = new GetOption();
-            getOption.SetCommandPrompt("Choose the GPT version");
-            getOption.AcceptNothing(true);
-            int optionIndex1 = getOption.AddOption("gpt-3.5-turbo");
-            int optionIndex2 = getOption.AddOption("gpt-4");
-
-            GetResult result = getOption.Get();
-
-            if (result == GetResult.Option)
-            {
-                if (getOption.OptionIndex() == optionIndex1)
-                {
-                    return "gpt-3.5-turbo";
-                }
-                else if (getOption.OptionIndex() == optionIndex2)
-                {
-                    return "gpt-4";
-                }
-            }
-
-            return null; // Return null if no valid option was selected or if the operation was canceled
         }
 
         private string GetUserInstructions()
@@ -114,36 +78,10 @@ namespace OpenAiCommandHelper
             {
                 return getStr.StringResult();
             }
-            
+
             return null; // Return null if user input is canceled
         }
 
-        private string CallPythonScript(string userInstruction)
-        {
-            string pythonPath = "/opt/homebrew/bin/python3"; // Python path
-            string scriptPath = "/Users/shararenorouzi/Library/CloudStorage/GoogleDrive-norouzi.sharare@gmail.com/My Drive/Thesis/call_openai_dep.py"; // Path to your Python script
-
-            ProcessStartInfo start = new ProcessStartInfo
-            {
-                FileName = pythonPath,
-                Arguments = $"\"{scriptPath}\" \"{userInstruction}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true
-            };
-
-            using (Process process = Process.Start(start))
-            {
-                using (StreamReader reader = process.StandardOutput)
-                {
-                    var res = reader.ReadToEnd();
-                    RhinoApp.WriteLine(res);
-
-                    RhinoApp.WriteLine("got result!");
-                    return res;
-                }
-            }
-        }
 
         private string CallPython(string userInstruction)
         {
@@ -152,10 +90,11 @@ namespace OpenAiCommandHelper
             const string activateConda = "source /Users/shararenorouzi/anaconda3/bin/activate";
 
             const string activateVenv = "conda activate thesis";
-            string scriptPath = "/Users/shararenorouzi/Library/CloudStorage/GoogleDrive-norouzi.sharare@gmail.com/My Drive/Thesis/call_openai.py"; // Path to your Python script
+            string scriptPath = "/Users/shararenorouzi/Library/CloudStorage/GoogleDrive-norouzi.sharare@gmail.com/My Drive/Thesis/call_openai_python.py"; // Path to your Python script
 
             var pythonCommand = $"python \"{scriptPath}\" \"{userInstruction}\"";
-            try {
+            try
+            {
                 var startInfo = new ProcessStartInfo
                 {
                     RedirectStandardOutput = true,
@@ -200,12 +139,13 @@ namespace OpenAiCommandHelper
                     throw new Exception($"Something went wrong: \n{error}");
 
                 return sb.ToString();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 RhinoApp.WriteLine(e.Message);
                 return null;
             }
-            }
+        }
 
         private Result CreateTextInTopView(RhinoDoc doc, string text, double height = 2, string font = "Arial")
         {
@@ -226,7 +166,7 @@ namespace OpenAiCommandHelper
                 Justification = TextJustification.Left,
                 FontIndex = doc.Fonts.FindOrCreate(font, false, false),
                 TextHeight = height,
-                
+
             };
 
             if (doc.Objects.AddText(textEntity) != Guid.Empty)
@@ -237,7 +177,6 @@ namespace OpenAiCommandHelper
 
             return Result.Failure;
         }
-
     }
-}
+    }
 
