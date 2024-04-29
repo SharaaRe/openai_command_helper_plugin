@@ -1,0 +1,14 @@
+[
+  "Draw a straight line from (2,3,0) to (5,8,0).",
+  "Create a circle centered at (4,4,0) with a radius of 3 units.",
+  "Construct a regular hexagon with each side measuring 4 units.",
+  "Place a point at (7,7,7).",
+  "Sketch a bezier curve passing through (0,0,0), (3,3,3), and (6,0,0).",
+  "Generate an equilateral triangle with a side length of 5 units at (2,2,0).",
+  "Create a rectangular plane with dimensions 4x6 units at the origin.",
+  "Draw an arc with a radius of 3 units from angle 0 to 90 degrees.",
+  "Create a polyline connecting points (0,0,0), (2,2,2), and (4,4,4).",
+  "Draw a spiral with a radius of 5 units and 3 turns."
+  ]
+
+  

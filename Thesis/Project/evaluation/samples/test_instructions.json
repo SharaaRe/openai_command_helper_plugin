@@ -1,0 +1,62 @@
+[
+
+  "Draw a straight line from (2,3,0) to (5,8,0).",
+  "Create a circle centered at (4,4,0) with a radius of 3 units.",
+  "Construct a regular hexagon with each side measuring 4 units.",
+  "Place a point at (7,7,7).",
+  "Sketch a curve passing through (0,0,0), (3,3,3), and (6,0,0).",
+  "Generate an equilateral triangle with a side length of 5 units at (2,2,0).",
+  "Create a rectangular plane with dimensions 4x6 units at the origin.",
+  "Draw an arc with a radius of 3 units from angle 0 to 90 degrees.",
+  "Create a polyline connecting points (0,0,0), (2,2,2), and (4,4,4).",
+  "Draw a spiral with a radius of 5 units and 3 turns.",
+
+  "Switch the current viewport to wireframe mode.",
+  "Display all layers that are currently hidden.",
+  "Zoom extents to fit all objects within the current viewport.",
+  "Set the display mode to shaded for the current view.",
+  "Activate the perspective view as the current viewport.",
+  "Highlight all objects on the layer named 'Site Plan'.",
+  "Switch to rendered view mode in the active viewport.",
+  "Turn on the grid display for the top view.",
+  "Set the view to show object edges as dashed lines.",
+  "Enable the display of surface control points.",
+
+
+  "Mirror the selected object across the global Y-axis.",
+  "Copy and move the selected geometry 5 units along the Z-axis.",
+  "Trim the larger surface with the boundary of the smaller surface.",
+  "Split a solid object using the selected cutting plane.",
+  "Offset a selected polyline inward by 1 unit.",
+  "Delete the currently selected free-form curve.",
+  "Create a blend between two open curves.",
+  "Scale the selected object down by 50%.",
+  "Rotate the selected object 90 degrees around the global X-axis.",
+  "Move the selected objects to layer 'Draft'.",
+
+
+  "Lock the layer named 'Annotations'.",
+  "Create a new layer named 'Electrical' with a red color.",
+  "Assign the selected objects to the 'Mechanical' layer.",
+  "Change the line type of the selected curves to 'Hidden'.",
+  "Set the print width of the selected objects to 0.25 mm.",
+  "Isolate all objects on the 'Landscaping' layer.",
+  "Rename the 'OldLayer' to 'Renovations'.",
+  "Change the object color of selected items to blue.",
+  "Lock all objects on the 'Furniture' layer.",
+  "Turn off the visibility of the 'HVAC' layer.",
+
+
+  "Dimension the distance between two selected points.",
+  "Label the midpoint of the selected line with text 'Midpoint'.",
+  "Show the area of the selected closed polyline.",
+  "Place a dimension annotating the radius of the selected circle.",
+  "Create a leader pointing to the selected object with text 'Main Entrance'.",
+  "Measure and display the angle between two intersecting lines.",
+  "Count and display the number of objects in the current selection.",
+  "Add a text block at point (5,5,0) saying 'Start Point'.",
+  "Annotate the length of the selected curve.",
+  "Place a linear dimension along the selected edge."
+]
+
+  

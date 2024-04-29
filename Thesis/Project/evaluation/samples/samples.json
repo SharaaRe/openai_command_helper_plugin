@@ -1,0 +1,60 @@
+{
+  "SimpleInstructions": {
+    "BasicGeometryCreation": [
+      "Draw a vertical line from (0,0,0) to (0,0,10).",
+      "Create an ellipse with a major axis of 15 units and a minor axis of 10 units.",
+      "Make a polygon with 6 sides, each side 5 units long.",
+      "Add a point at coordinates (5,5,5).",
+      "Sketch a curve connecting points (1,1), (2,3), and (4,5).",
+      "Generate a rectangle with dimensions 20x10 units.",
+      "Construct an arc starting at 0 degrees and ending at 90 degrees with a radius of 10."
+    ],
+    "ViewAndDisplay": [
+      "Switch to wireframe mode.",
+      "Display all hidden objects.",
+      "Fit all objects into the current viewport.",
+      "Enable shaded view mode.",
+      "Set the perspective view as active.",
+      "Highlight all objects on the 'Construction' layer.",
+      "Render the scene with default settings."
+    ],
+    "BasicObjectEditing": [
+      "Mirror the selected object across the X-axis.",
+      "Copy and paste the selected geometry at point (10,10,10).",
+      "Trim the first selected surface with the second one.",
+      "Split the selected object with the cutting plane.",
+      "Offset a polyline by 2 units.",
+      "Delete the selected curve.",
+      "Blend two curves with continuity."
+    ]
+  },
+  "IntermediateInstructions": {
+    "ModelingAndSurfaceOperations": [
+      "Loft between these three curves.",
+      "Revolve this curve around the Z-axis.",
+      "Subtract the smaller solid from the larger solid.",
+      "Create a surface from the four bounding curves.",
+      "Sweep this profile along the path curve.",
+      "Thicken this surface by 1 unit.",
+      "Create a rounded edge on this cube with a radius of 1."
+    ],
+    "LayerManagementAndObjectProperties": [
+      "Lock all objects in the 'Annotations' layer.",
+      "Make a new layer called 'HVAC' with green color.",
+      "Assign the selected objects to the 'Roof' layer.",
+      "Change the line-type of these curves to dashed.",
+      "Set the object's print width to 0.5 mm.",
+      "Isolate the selected layer.",
+      "Rename the current layer to 'Interior Walls'."
+    ],
+    "DimensionsAndAnnotations": [
+      "Dimension the length of this edge.",
+      "Add text label near the point (5,5,0) with the content 'Entry Point'.",
+      "Show the area annotation of this closed curve.",
+      "Place a leader with text saying 'Note' pointing to this object.",
+      "Create an angular dimension between these two lines.",
+      "Measure the radius of this circle.",
+      "Count the number of objects in the selection."
+    ]
+  }}
+  

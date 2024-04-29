@@ -1,0 +1,13 @@
+["Draw a vertical line from (0,0,0) to (0,0,10).",
+"Create an ellipse with a major axis of 15 units and a minor axis of 10 units.",
+"Make a polygon with 6 sides, each side 5 units long.",
+"Switch the current viewport to wireframe mode.",
+"Display all layers that are currently hidden.",
+"Mirror the selected object across the global Y-axis.",
+"Copy and move the selected geometry 5 units along the Z-axis.",
+"Trim the larger surface with the boundary of the smaller surface.",
+"Switch to wireframe mode.",
+"Display all hidden objects.",
+"Loft between these three curves.",
+"Revolve this curve around the Z-axis.",
+"Measure the radius of this circle."]
