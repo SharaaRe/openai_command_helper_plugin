@@ -118,47 +118,14 @@ namespace OpenAiCommandHelper
             return null; // Return null if user input is canceled
         }
 
-        private string CallPythonScript(string userInstruction)
-        {
-            string pythonPath = "/opt/homebrew/bin/python3"; // Python path
-            string scriptPath = "/Users/shararenorouzi/Library/CloudStorage/GoogleDrive-norouzi.sharare@gmail.com/My Drive/Thesis/call_openai_dep.py"; // Path to your Python script
-
-            ProcessStartInfo start = new ProcessStartInfo
-            {
-                FileName = pythonPath,
-                Arguments = $"\"{scriptPath}\" \"{userInstruction}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-
-            using (Process process = Process.Start(start))
-            {
-                using (StreamReader reader = process.StandardOutput)
-                using (StreamReader errorReader = process.StandardError)
-
-                {
-                    var res = reader.ReadToEnd();
-                    var err = errorReader.ReadToEnd();
-
-                    RhinoApp.WriteLine(res);
-                    RhinoApp.WriteLine("Error!" + err);
-                    RhinoApp.WriteLine("got result!");
-
-                    return res;
-                }
-            }
-        }
-
         private string CallPython(string userInstruction)
         {
             const string cmd = "bash";
             //const string args = "";
-            const string activateConda = "source /Users/shararenorouzi/anaconda3/bin/activate";
+            const string activateConda = "source {CONDA ENV PATH}";
 
             const string activateVenv = "conda activate thesis";
-            string scriptPath = "/Users/shararenorouzi/Library/CloudStorage/GoogleDrive-norouzi.sharare@gmail.com/My Drive/Thesis/call_openai.py"; // Path to your Python script
+            string scriptPath = "../Thesis/call_openai.py"; // Path to your Python script
 
             var pythonCommand = $"python \"{scriptPath}\" \"{userInstruction}\"";
             try {
