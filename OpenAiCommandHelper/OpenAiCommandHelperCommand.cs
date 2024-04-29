@@ -129,17 +129,23 @@ namespace OpenAiCommandHelper
                 Arguments = $"\"{scriptPath}\" \"{userInstruction}\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
+                RedirectStandardError = true,
                 CreateNoWindow = true
             };
 
             using (Process process = Process.Start(start))
             {
                 using (StreamReader reader = process.StandardOutput)
+                using (StreamReader errorReader = process.StandardError)
+
                 {
                     var res = reader.ReadToEnd();
-                    RhinoApp.WriteLine(res);
+                    var err = errorReader.ReadToEnd();
 
+                    RhinoApp.WriteLine(res);
+                    RhinoApp.WriteLine("Error!" + err);
                     RhinoApp.WriteLine("got result!");
+
                     return res;
                 }
             }
@@ -197,7 +203,10 @@ namespace OpenAiCommandHelper
 
                 var error = process.StandardError.ReadToEnd();
                 if (!string.IsNullOrEmpty(error))
+                {
+                    RhinoApp.WriteLine($"Something went wrong: \n{error}");
                     throw new Exception($"Something went wrong: \n{error}");
+                }
 
                 return sb.ToString();
             } catch (Exception e)
